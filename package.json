@@ -1,0 +1,9 @@
+{
+  "name": "tradepanel-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated smoke tests for the TradePanel public portfolio demo",
+  "scripts": { "test": "playwright test" },
+  "devDependencies": { "@playwright/test": "^1.63.0" }
+}
+

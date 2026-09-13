@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.log
+node_modules/
+test-results/
+playwright-report/
+tradepanel-local.png
+.idea/
+.vscode/
