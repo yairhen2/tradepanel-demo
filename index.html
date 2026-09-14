@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TradePanel — Multi-Strategy Trading Scanner Demo</title>
 <meta name="description" content="TradePanel public portfolio demo: deterministic day, swing and long-term strategy scanning with simulated data.">
-<link rel="stylesheet" href="scanner-upgrade.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 :root{
@@ -274,11 +273,15 @@ canvas{display:block}
 .tst.bl{border-color:#4d8dff45}.tst.bl .ti{color:var(--blu)}
 .ti{font-size:14px}
 </style>
+<link rel="stylesheet" href="scanner-upgrade.css">
 </head>
 <body>
 <aside class="sidebar">
   <div class="logo"><div class="logo-mark">TP</div>
-    <div><div class="logo-txt">TradePanel</div><div class="logo-sub">MULTI-STRATEGY SCANNER</div></div></div>
+    <div><div class="logo-txt">TradePanel</div><div class="logo-sub">MULTI-STRATEGY SCANNER</div></div>
+    <button class="mobile-menu" type="button" aria-controls="nav" aria-expanded="false" aria-label="Open navigation" onclick="toggleMobileNav(this)">
+      <span></span><span></span><span></span>
+    </button></div>
   <nav class="nav" id="nav"></nav>
   <div class="demo-tag">◈ PUBLIC DEMO — simulated market data. No broker connection, no orders transmitted.</div>
   <div class="sb-foot"><div class="acct"><div class="avatar">YH</div>
@@ -506,8 +509,15 @@ function buildNav(){
   return `<div class="nav-item${p.id===CUR?' on':''}" data-p="${p.id}">
    <span class="nav-ico">${p.i}</span>${p.n}${b?`<span class="nav-badge">${b}</span>`:''}</div>`}).join('');
  document.querySelectorAll('.nav-item').forEach(el=>el.onclick=()=>go(el.dataset.p))}
+function toggleMobileNav(button){
+ const sidebar=document.querySelector('.sidebar'),open=sidebar.classList.toggle('menu-open');
+ button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-label',open?'Close navigation':'Open navigation')}
+function closeMobileNav(){
+ const sidebar=document.querySelector('.sidebar'),button=document.querySelector('.mobile-menu');
+ if(sidebar)sidebar.classList.remove('menu-open');
+ if(button){button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open navigation')}}
 function go(id){
- CUR=id;buildNav();const p=PAGES.find(x=>x.id===id);
+ CUR=id;closeMobileNav();buildNav();const p=PAGES.find(x=>x.id===id);
  $('pgT').textContent=p.t;$('pgS').textContent=p.s;window.scrollTo(0,0);
  $('view').innerHTML=`<div class="grid g4" style="margin-bottom:13px">
   ${'<div class="sk" style="height:108px"></div>'.repeat(4)}</div>
@@ -1268,7 +1278,7 @@ setInterval(tick,1000);tick();
 let nx=76;
 setInterval(()=>{nx--;if(nx<0)nx=90;const e=$('nextScan');if(e)e.textContent='in '+nx+'s'},1000);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&D)closeStock()});
-window.addEventListener('resize',()=>{if(D)drawChart()});
+window.addEventListener('resize',()=>{if(window.innerWidth>768)closeMobileNav();if(D)drawChart()});
 buildNav();RENDER.scan();
 </script>
 <script src="scanner-upgrade.js"></script>
